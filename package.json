@@ -1,5 +1,5 @@
 {
-  "name": "node-view-helpers",
+  "name": "view-helpers",
   "version": "0.0.1",
   "description": "View helper methods for expressjs and other node stuff",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/madhums/node-view-helpers"
+    "url": "git://github.com/madhums/node-view-helpers.git"
   },
   "keywords": [
     "helpers",
