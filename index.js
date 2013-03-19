@@ -20,7 +20,7 @@ function helpers (name) {
     res.locals.title = name || 'App'
     res.locals.req = req
     res.locals.isActive = function (link) {
-      return req.url === link ? 'active' : ''
+      return req.url.indexOf(link) !== -1 ? 'active' : ''
     }
     res.locals.formatDate = formatDate
     res.locals.stripScript = stripScript
