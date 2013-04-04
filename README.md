@@ -12,6 +12,8 @@ or specify in package.json as dependency
 
 ## Usage
 
+with express
+
 ```js
 var helpers = require('view-helpers')
 app.use(helpers('app name'))
@@ -19,9 +21,12 @@ app.use(helpers('app name'))
 
 In your views you would have access to some methods and variables. The middleware also exposes `req` object.
 
+### API
+
 * `createPagination(req)` - req is the request object from express
 * `formatDate(date)` - date is a mongoose `Date` object
-
+* `isActive('/link/href/')` - to add active class to the link
+* `stripScript(str)` - to escape javascript inputs
 
 ## License
 (The MIT License)
