@@ -25,6 +25,14 @@ function helpers (name) {
     res.locals.formatDate = formatDate
     res.locals.stripScript = stripScript
     res.locals.createPagination = createPagination(req)
+
+    if (typeof req.flash !== 'undefined') {
+      res.locals.info = req.flash('info')
+      res.locals.errors = req.flash('errors')
+      res.locals.success = req.flash('success')
+      res.locals.warning = req.flash('warning')
+    }
+
     next()
   }
 }
