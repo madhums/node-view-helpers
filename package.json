@@ -1,6 +1,6 @@
 {
   "name": "view-helpers",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "View helper methods for expressjs and other node stuff",
   "main": "index.js",
   "scripts": {
