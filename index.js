@@ -83,6 +83,23 @@ function formatDate (date) {
 }
 
 /**
+ * Format date time helper
+ *
+ * @param {Date} date
+ * @return {String}
+ * @api private
+ */
+
+function formatDatetime (date) {
+  var hour = date.getHours();
+  var minutes = date.getMinutes() < 10
+    ? '0' + date.getMinutes().toString()
+    : date.getMinutes();
+
+  return formatDate(date) + ' ' + hour + ':' + minutes;
+}
+
+/**
  * Strip script tags
  *
  * @param {String} str
