@@ -23,6 +23,7 @@ function helpers (name) {
       return req.url.indexOf(link) !== -1 ? 'active' : ''
     }
     res.locals.formatDate = formatDate
+    res.locals.formatDatetime = formatDatetime
     res.locals.stripScript = stripScript
     res.locals.createPagination = createPagination(req)
 
