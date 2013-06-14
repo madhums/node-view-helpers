@@ -1,4 +1,10 @@
 
+0.1.0 / 2013-06-14 
+==================
+
+  * support backward compatibility, update readme about usage
+  * add mobile view rednering feature
+
 0.0.4 / 2013-04-29 
 ==================
 
