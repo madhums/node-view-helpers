@@ -16,7 +16,7 @@ with express
 
 ```js
 var helpers = require('view-helpers')
-app.use(helpers('app name', app))
+app.use(helpers('app name', app)) // `app` is the express object
 ```
 
 In your views you would have access to some methods and variables. The middleware also exposes `req` object.
@@ -28,7 +28,7 @@ In your views you would have access to some methods and variables. The middlewar
 * `isActive('/link/href/')` - to add active class to the link
 * `stripScript(str)` - to escape javascript inputs
 * `req.isMobile` - detects if the request is coming from tablet/mobile device
-* mobile templates - If the request is coming from a mobile device, then it would try to look for a `.mobile.jade` (or the registered extension, it can also be ejs, hbs etc) file in the views folder and render it. This has been added in the 0.1.0 version. To take advantage of this, you should pass the express `app` object. Refer to `166ebf2` for more details.
+* `res.render('template', locals, cb)` - mobile templates - If the request is coming from a mobile device, then it would try to look for a `template.mobile.jade` (or with the registered extension, it can also be ejs, hbs etc) file in the views folder and render it. This has been added in the 0.1.0 version. To take advantage of this, you should pass the express `app` object. Refer to [166ebf2](https://github.com/madhums/node-view-helpers/commit/166ebf2#L0L16) for more details.
 
 ## License
 (The MIT License)
