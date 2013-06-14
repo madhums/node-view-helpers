@@ -14,7 +14,7 @@ var url = require('url')
  * @api public
  */
 
-function helpers (name) {
+function helpers (name, app) {
   return function (req, res, next) {
     res.locals.appName = name || 'App'
     res.locals.title = name || 'App'
@@ -32,6 +32,33 @@ function helpers (name) {
       res.locals.errors = req.flash('errors')
       res.locals.success = req.flash('success')
       res.locals.warning = req.flash('warning')
+    }
+
+    /**
+     * Render mobile views
+     *
+     * If the request is coming from a mobile/tablet device, it will check if
+     * there is a .mobile.ext file and it that exists it tries to render it.
+     *
+     * Refer https://github.com/madhums/nodejs-express-mongoose-demo/issues/39
+     * For the implementation refer the above app
+     */
+
+    var ua = req.header('user-agent')
+    var fs = require('fs')
+
+    res._render = res.render
+    req.isMobile = /mobile/i.test(ua)
+
+    res.render = function (template, locals, cb) {
+      var view = template + '.mobile.' + app.get('view engine')
+      var file = app.get('views') + '/' + view
+
+      if (/mobile/i.test(ua) && fs.existsSync(file)) {
+        res._render(view, locals, cb)
+      } else {
+        res._render(template, locals, cb)
+      }
     }
 
     next()
