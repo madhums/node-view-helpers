@@ -16,7 +16,7 @@ with express
 
 ```js
 var helpers = require('view-helpers')
-app.use(helpers('app name'))
+app.use(helpers('app name', app))
 ```
 
 In your views you would have access to some methods and variables. The middleware also exposes `req` object.
@@ -27,6 +27,7 @@ In your views you would have access to some methods and variables. The middlewar
 * `formatDate(date)` - date is a mongoose `Date` object
 * `isActive('/link/href/')` - to add active class to the link
 * `stripScript(str)` - to escape javascript inputs
+* mobile templates - If the request is coming from a mobile device, then it would try to look for a `.mobile.jade` (or the registered extension, it can also be ejs, hbs etc) file in the views folder and render it. This has been added in the 0.1.0 version. To take advantage of this, you should pass the express `app` object. Refer to `166ebf2` for more details.
 
 ## License
 (The MIT License)

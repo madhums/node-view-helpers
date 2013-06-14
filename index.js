@@ -44,20 +44,23 @@ function helpers (name, app) {
      * For the implementation refer the above app
      */
 
-    var ua = req.header('user-agent')
-    var fs = require('fs')
+    // For backward compatibility check if `app` param has been passed
+    if (app) {
+      var ua = req.header('user-agent')
+      var fs = require('fs')
 
-    res._render = res.render
-    req.isMobile = /mobile/i.test(ua)
+      res._render = res.render
+      req.isMobile = /mobile/i.test(ua)
 
-    res.render = function (template, locals, cb) {
-      var view = template + '.mobile.' + app.get('view engine')
-      var file = app.get('views') + '/' + view
+      res.render = function (template, locals, cb) {
+        var view = template + '.mobile.' + app.get('view engine')
+        var file = app.get('views') + '/' + view
 
-      if (/mobile/i.test(ua) && fs.existsSync(file)) {
-        res._render(view, locals, cb)
-      } else {
-        res._render(template, locals, cb)
+        if (/mobile/i.test(ua) && fs.existsSync(file)) {
+          res._render(view, locals, cb)
+        } else {
+          res._render(template, locals, cb)
+        }
       }
     }
 
