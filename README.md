@@ -1,6 +1,6 @@
 ## View Helpers
 
-This module is used as express middleware and it provides some helper methods.
+This module is used as express middleware and it provides helper methods to the views.
 
 ## Installation
 
