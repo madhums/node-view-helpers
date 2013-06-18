@@ -84,17 +84,19 @@ function createPagination (req) {
     var params = qs.parse(url.parse(req.url).query)
     var str = ''
 
-    params.page = 0
-    var clas = page == 0 ? "active" : "no"
-    str += '<li class="'+clas+'"><a href="?'+qs.stringify(params)+'">First</a></li>'
-    for (var p = 1; p < pages; p++) {
+    params.page = 1
+    var clas = page == 1 ? "active" : "no"
+
+    for (var p = 1; p <= pages; p++) {
       params.page = p
       clas = page == p ? "active" : "no"
-      str += '<li class="'+clas+'"><a href="?'+qs.stringify(params)+'">'+ p +'</a></li>'
+
+      var href = p === 1
+        ? url.parse(req.url).pathname
+        : '?' + qs.stringify(params)
+
+      str += '<li class="'+clas+'"><a href="'+ href +'">'+ p +'</a></li>'
     }
-    params.page = --p
-    clas = page == params.page ? "active" : "no"
-    str += '<li class="'+clas+'"><a href="?'+qs.stringify(params)+'">Last</a></li>'
 
     return str
   }
