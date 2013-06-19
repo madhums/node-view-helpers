@@ -1,4 +1,9 @@
 
+0.1.2 / 2013-06-19 
+==================
+
+  * use req.app - which is same as express app object. no need to pass the  object
+
 0.1.1 / 2013-06-18 
 ==================
 
