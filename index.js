@@ -14,7 +14,7 @@ var url = require('url')
  * @api public
  */
 
-function helpers (name, app) {
+function helpers (name) {
   return function (req, res, next) {
     res.locals.appName = name || 'App'
     res.locals.title = name || 'App'
@@ -45,22 +45,20 @@ function helpers (name, app) {
      */
 
     // For backward compatibility check if `app` param has been passed
-    if (app) {
-      var ua = req.header('user-agent')
-      var fs = require('fs')
+    var ua = req.header('user-agent')
+    var fs = require('fs')
 
-      res._render = res.render
-      req.isMobile = /mobile/i.test(ua)
+    res._render = res.render
+    req.isMobile = /mobile/i.test(ua)
 
-      res.render = function (template, locals, cb) {
-        var view = template + '.mobile.' + app.get('view engine')
-        var file = app.get('views') + '/' + view
+    res.render = function (template, locals, cb) {
+      var view = template + '.mobile.' + req.app.get('view engine')
+      var file = req.app.get('views') + '/' + view
 
-        if (/mobile/i.test(ua) && fs.existsSync(file)) {
-          res._render(view, locals, cb)
-        } else {
-          res._render(template, locals, cb)
-        }
+      if (/mobile/i.test(ua) && fs.existsSync(file)) {
+        res._render(view, locals, cb)
+      } else {
+        res._render(template, locals, cb)
       }
     }
 
