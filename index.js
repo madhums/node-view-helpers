@@ -78,24 +78,58 @@ module.exports = helpers
  */
 
 function createPagination (req) {
-  return function createPagination (pages, page) {
+  return function createPagination (pages, currentPage, maxDisplay) {
+    currentPage = parseInt(currentPage)
+    pages=Math.ceil(pages)
+    var paginationLinkStr =function(page, text, params){
+      params.page=page
+      var clas = currentPage == page ? "active" : "no"
+      return '<li class="'+clas+'"><a href="?'+qs.stringify(params)+'">'+text+'</a></li>'
+    }
     var params = qs.parse(url.parse(req.url).query)
     var str = ''
+    maxDisplay= maxDisplay===undefined ? 8 : maxDisplay
 
-    params.page = 1
-    var clas = page == 1 ? "active" : "no"
+    // See the location of the current page.
+    // if it is close to the first page by lesser than max-4 pages then show 1 to max-2 .. last-1, last
+    // if it is close to the last page by lesser than max-4  pages then show 1,2 .. last-(max-2) to last
+    // if neither.. then show 1,2 .. current-(max/2-1) to current+(max/2+1) .. last-1, last
 
-    for (var p = 1; p <= pages; p++) {
-      params.page = p
-      clas = page == p ? "active" : "no"
+    str += paginationLinkStr(0, 'First', params)
 
-      var href = p === 1
-        ? url.parse(req.url).pathname
-        : '?' + qs.stringify(params)
+    if(pages>maxDisplay){
+      if(currentPage < (maxDisplay - 4)){
+        //case 1
+        for (var pageNo = 1; pageNo <= (maxDisplay - 3); pageNo++) {
+          str += paginationLinkStr(pageNo, pageNo, params)
+        }
+        str += paginationLinkStr(pages-2, pages-2, params)
+        str += paginationLinkStr(pages-1, pages-1, params)
+      }else if ((pages - currentPage) < (maxDisplay - 4)){
+        //case 2
+        str += paginationLinkStr(1, 1, params)
+        for (var pageNo = (pages - maxDisplay + 2); pageNo < pages; pageNo++) {
+          str += paginationLinkStr(pageNo, pageNo, params)
+        }
+      }else{
+        //case 3
+        str += paginationLinkStr(1, 1, params)
+        var max=currentPage + maxDisplay/2 - 2
+        for (var pageNo = currentPage - (maxDisplay / 2 - 2); pageNo <=max ; pageNo++) {
+          str += paginationLinkStr(pageNo, pageNo, params)
+        }
+        str += paginationLinkStr(pages-2, pages-2, params)
+        str += paginationLinkStr(pages-1, pages-1, params)
+      }
 
-      str += '<li class="'+clas+'"><a href="'+ href +'">'+ p +'</a></li>'
+    }else{
+      //render all page links!!
+
+      for (var pageNo = 1; pageNo < pages; pageNo++) {
+        str += paginationLinkStr(pageNo, pageNo, params)
+      }
     }
-
+    str += paginationLinkStr(--pages, 'Last', params)
     return str
   }
 }
