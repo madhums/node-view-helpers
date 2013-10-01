@@ -89,9 +89,7 @@ function createPagination (req) {
       params.page = p
       clas = page == p ? "active" : "no"
 
-      var href = p === 1
-        ? url.parse(req.url).pathname
-        : '?' + qs.stringify(params)
+      var href = '?' + qs.stringify(params)
 
       str += '<li class="'+clas+'"><a href="'+ href +'">'+ p +'</a></li>'
     }
@@ -109,6 +107,7 @@ function createPagination (req) {
  */
 
 function formatDate (date) {
+  date = new Date(date)
   var monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
   return monthNames[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()
 }
@@ -122,6 +121,7 @@ function formatDate (date) {
  */
 
 function formatDatetime (date) {
+  date = new Date(date)
   var hour = date.getHours();
   var minutes = date.getMinutes() < 10
     ? '0' + date.getMinutes().toString()
