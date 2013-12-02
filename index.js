@@ -26,6 +26,7 @@ function helpers (name) {
     res.locals.formatDatetime = formatDatetime
     res.locals.stripScript = stripScript
     res.locals.createPagination = createPagination(req)
+    res.locals.firstLetterToCaps = firstLetterToCaps
 
     if (typeof req.flash !== 'undefined') {
       res.locals.info = req.flash('info')
@@ -140,4 +141,20 @@ function formatDatetime (date) {
 
 function stripScript (str) {
   return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+}
+
+/**
+ * Captilize the first letter in each word
+ *
+ * turns hello world into Hello World
+ * @param  {String} str 
+ * @return {String}     
+ */
+function firstLetterToCaps (str){
+  //first, split str based on spaces
+  var words = str.split(" ").map(function(word){
+    //captilize the first letter
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return words.join(" ");
 }
