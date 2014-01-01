@@ -29,7 +29,7 @@ function helpers (name) {
 
     if (typeof req.flash !== 'undefined') {
       res.locals.info = req.flash('info')
-      res.locals.errors = req.flash('errors')
+      res.locals.errors = req.flash('error')
       res.locals.success = req.flash('success')
       res.locals.warning = req.flash('warning')
     }
