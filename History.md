@@ -1,4 +1,9 @@
 
+0.1.4 / 2014-01-02
+==================
+
+  * Fixes flash error messages. Now every error flash message should be in this format `req.flash('error')` and not `req.flash('errors')`
+
 0.1.3 / 2013-10-01
 ==================
 
