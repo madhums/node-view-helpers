@@ -34,6 +34,10 @@ function helpers (name) {
       res.locals.success = req.flash('success')
       res.locals.warning = req.flash('warning')
     }
+    //if page title is missing, return 500
+    if(!res.locals.page.title){
+      req.redirect('/404');
+    }
 
     /**
      * Render mobile views
