@@ -20,11 +20,15 @@ function helpers (name) {
     res.locals.title = name || 'App'
     res.locals.req = req
     res.locals.isActive = function (link) {
+
+      var requestUrl = req.originalUrl || req.url;
+
       if (link === '/' ) {
-        return req.url === '/' ? 'active' : ''
+        return reqUrl === '/' ? 'active' : ''
       } else {
-        return req.url.indexOf(link) !== -1 ? 'active' : ''
+        return reqUrl.indexOf(link) !== -1 ? 'active' : ''
       }
+
     }
     res.locals.formatDate = formatDate
     res.locals.formatDatetime = formatDatetime
