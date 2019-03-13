@@ -1,10 +1,9 @@
-
 /**
  * Module dependencies.
  */
 
-var url = require('url')
-  , qs = require('querystring')
+var url = require('url'),
+  qs = require('querystring');
 
 /**
  * Helpers method
@@ -14,28 +13,28 @@ var url = require('url')
  * @api public
  */
 
-function helpers (name) {
-  return function (req, res, next) {
-    res.locals.appName = name || 'App'
-    res.locals.title = name || 'App'
-    res.locals.req = req
-    res.locals.isActive = function (link) {
-      if (link === '/' ) {
-        return req.url === '/' ? 'active' : ''
+function helpers(name) {
+  return function(req, res, next) {
+    res.locals.appName = name || 'App';
+    res.locals.title = name || 'App';
+    res.locals.req = req;
+    res.locals.isActive = function(link) {
+      if (link === '/') {
+        return req.url === '/' ? 'active' : '';
       } else {
-        return req.url.indexOf(link) !== -1 ? 'active' : ''
+        return req.url.indexOf(link) !== -1 ? 'active' : '';
       }
-    }
-    res.locals.formatDate = formatDate
-    res.locals.formatDatetime = formatDatetime
-    res.locals.stripScript = stripScript
-    res.locals.createPagination = createPagination(req)
+    };
+    res.locals.formatDate = formatDate;
+    res.locals.formatDatetime = formatDatetime;
+    res.locals.stripScript = stripScript;
+    res.locals.createPagination = createPagination(req);
 
     if (typeof req.flash !== 'undefined') {
-      res.locals.info = req.flash('info')
-      res.locals.errors = req.flash('error')
-      res.locals.success = req.flash('success')
-      res.locals.warning = req.flash('warning')
+      res.locals.info = req.flash('info');
+      res.locals.errors = req.flash('error');
+      res.locals.success = req.flash('success');
+      res.locals.warning = req.flash('warning');
     }
 
     /**
@@ -49,28 +48,28 @@ function helpers (name) {
      */
 
     // For backward compatibility check if `app` param has been passed
-    var ua = req.header('user-agent')
-    var fs = require('fs')
+    var ua = req.header('user-agent');
+    var fs = require('fs');
 
-    res._render = res.render
-    req.isMobile = /mobile/i.test(ua)
+    res._render = res.render;
+    req.isMobile = /mobile/i.test(ua);
 
-    res.render = function (template, locals, cb) {
-      var view = template + '.mobile.' + req.app.get('view engine')
-      var file = req.app.get('views') + '/' + view
+    res.render = function(template, locals, cb) {
+      var view = template + '.mobile.' + req.app.get('view engine');
+      var file = req.app.get('views') + '/' + view;
 
       if (/mobile/i.test(ua) && fs.existsSync(file)) {
-        res._render(view, locals, cb)
+        res._render(view, locals, cb);
       } else {
-        res._render(template, locals, cb)
+        res._render(template, locals, cb);
       }
-    }
+    };
 
-    next()
-  }
+    next();
+  };
 }
 
-module.exports = helpers
+module.exports = helpers;
 
 /**
  * Pagination helper
@@ -81,25 +80,25 @@ module.exports = helpers
  * @api private
  */
 
-function createPagination (req) {
-  return function createPagination (pages, page) {
-    var params = qs.parse(url.parse(req.url).query)
-    var str = ''
+function createPagination(req) {
+  return function createPagination(pages, page, liClass, anchorClass) {
+    var params = qs.parse(url.parse(req.url).query);
+    var str = '';
 
-    params.page = 1
-    var clas = page == 1 ? "active" : "no"
+    params.page = 1;
+    var clas = (page == 1 && 'active') || '';
 
     for (var p = 1; p <= pages; p++) {
-      params.page = p
-      clas = page == p ? "active" : "no"
+      params.page = p;
+      clas = (page == p && 'active') || '';
 
-      var href = '?' + qs.stringify(params)
+      var href = '?' + qs.stringify(params);
 
-      str += '<li class="'+clas+'"><a href="'+ href +'">'+ p +'</a></li>'
+      str += `<li class="${liClass} ${clas}"><a class="${anchorClass}" href="${href}">${p}</a></li>`;
     }
 
-    return str
-  }
+    return str;
+  };
 }
 
 /**
@@ -110,10 +109,29 @@ function createPagination (req) {
  * @api private
  */
 
-function formatDate (date) {
-  date = new Date(date)
-  var monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-  return monthNames[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()
+function formatDate(date) {
+  date = new Date(date);
+  var monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+  return (
+    monthNames[date.getMonth()] +
+    ' ' +
+    date.getDate() +
+    ', ' +
+    date.getFullYear()
+  );
 }
 
 /**
@@ -124,12 +142,13 @@ function formatDate (date) {
  * @api private
  */
 
-function formatDatetime (date) {
-  date = new Date(date)
+function formatDatetime(date) {
+  date = new Date(date);
   var hour = date.getHours();
-  var minutes = date.getMinutes() < 10
-    ? '0' + date.getMinutes().toString()
-    : date.getMinutes();
+  var minutes =
+    date.getMinutes() < 10
+      ? '0' + date.getMinutes().toString()
+      : date.getMinutes();
 
   return formatDate(date) + ' ' + hour + ':' + minutes;
 }
@@ -142,6 +161,6 @@ function formatDatetime (date) {
  * @api private
  */
 
-function stripScript (str) {
-  return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+function stripScript(str) {
+  return str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 }
