@@ -23,7 +23,7 @@ In your views you would have access to some methods and variables. The middlewar
 
 ### API
 
-* `createPagination(pages, page)` - creates pagination
+* `createPagination(pages, page, liClassName, anchorClassName)` - creates pagination
 * `formatDate(date)` - date is a mongoose `Date` object
 * `isActive('/link/href/')` - to add active class to the link
 * `stripScript(str)` - to escape javascript inputs
